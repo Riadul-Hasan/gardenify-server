@@ -31,6 +31,7 @@ async function run() {
     const gardenerCollection = client.db('gardening').collection("gardeners")
     const tipsCollection = client.db('gardening').collection('tips')
     const usersCollection = client.db('gardening').collection("users")
+    const shareTipsCollection = client.db('gardening').collection('shareTips')
 
    
 
@@ -41,6 +42,13 @@ async function run() {
 
     app.get("/tips", async (req, res)=>{
         const result = await tipsCollection.find().limit(6).toArray();
+        res.send(result)
+    })
+
+
+    app.post("/shareTips", async (req, res)=>{
+        const newTips = req.body;
+        const result = await shareTipsCollection.insertOne(newTips)
         res.send(result)
     })
     

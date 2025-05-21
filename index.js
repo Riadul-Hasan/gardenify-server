@@ -52,6 +52,11 @@ async function run() {
         res.send(result)
     })
     
+    app.get("/shareTips", async(req, res)=>{
+        const result = await shareTipsCollection.find({
+        availability: "public"}).toArray()
+        res.send(result)
+    })
 
   
 

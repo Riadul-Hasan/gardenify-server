@@ -29,7 +29,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const gardenerCollection = client.db('gardening').collection("gardeners")
-    const tipsCollection = client.db('gardening').collection('tips')
+    // const tipsCollection = client.db('gardening').collection('tips')
     const usersCollection = client.db('gardening').collection("users")
     const shareTipsCollection = client.db('gardening').collection('shareTips')
 
@@ -41,7 +41,7 @@ async function run() {
 });
 
     app.get("/tips", async (req, res)=>{
-        const result = await tipsCollection.find().limit(6).toArray();
+        const result = await shareTipsCollection.find().limit(6).toArray();
         res.send(result)
     })
 
@@ -67,6 +67,13 @@ async function run() {
         res.send(result)
     })
 
+     app.get("/myTips", async (req, res)=>{
+        const email = req.query.email;
+        const myTips = {email: email};
+        const result = await shareTipsCollection.find(myTips).toArray()
+        res.send(result)
+    })
+   
   
 
     // users releted api

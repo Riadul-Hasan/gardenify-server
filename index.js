@@ -53,9 +53,12 @@ async function run() {
     })
     
 
+    // browse tips get
     app.get("/shareTips", async(req, res)=>{
         const result = await shareTipsCollection.find({
         availability: "public"}).toArray()
+         const order = { easy: 1, medium: 2, hard: 3 };
+          result.sort((a, b) => (order[a.difficulty] || 4) - (order[b.difficulty] || 4));
         res.send(result)
     })
 

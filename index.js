@@ -73,6 +73,18 @@ async function run() {
         const result = await shareTipsCollection.find(myTips).toArray()
         res.send(result)
     })
+    // update
+    app.put("/shareTips/:id", async (req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)}
+      const option = {upsert: true};
+      const updatedTips = req.body;
+      const updatedDoc = {
+        $set: updatedTips
+      }
+      const result = await shareTipsCollection.updateOne(filter, updatedDoc, option);
+      res.send(result)
+    })
    
     // delete
     app.delete("/shareTips/:id", async(req, res)=>{

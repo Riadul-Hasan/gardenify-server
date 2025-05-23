@@ -29,7 +29,6 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const gardenerCollection = client.db('gardening').collection("gardeners")
-    // const tipsCollection = client.db('gardening').collection('tips')
     const usersCollection = client.db('gardening').collection("users")
     const shareTipsCollection = client.db('gardening').collection('shareTips')
 
@@ -59,6 +58,7 @@ async function run() {
         availability: "public"}).toArray()
          const order = { easy: 1, medium: 2, hard: 3 };
           result.sort((a, b) => (order[a.difficulty] || 4) - (order[b.difficulty] || 4));
+          // jar order kom hobe she age dekhabe table e
         res.send(result)
     })
 
@@ -68,6 +68,19 @@ async function run() {
         const tipDetails = {_id: new ObjectId(id)}
         const result = await shareTipsCollection.findOne(tipDetails)
         res.send(result)
+    })
+
+    // update likes from database
+    app.patch("/shareTips/:id", async (req, res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)}
+      const updatedDoc = {
+        $inc: {
+          totalLiked: 1
+        }
+      }
+      const result = await shareTipsCollection.updateOne(filter, updatedDoc);
+      res.send(result)
     })
 
      app.get("/myTips", async (req, res)=>{

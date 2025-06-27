@@ -35,7 +35,7 @@ async function run() {
     });
 
     app.get("/tips", async (req, res) => {
-      const result = await shareTipsCollection.find().limit(6).toArray();
+      const result = await shareTipsCollection.find().limit(8).toArray();
       res.send(result);
     });
 
